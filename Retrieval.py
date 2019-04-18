@@ -1,5 +1,7 @@
 import Indexer
 from Indexer import number_of_terms1
+import math
+import os
 
 parsed_queries = []
 number_of_terms1 = dict()
@@ -20,14 +22,17 @@ def read_query_doc():
 def tf_idf():
     pass
 
+
 def BM25():
     pass
+
 
 def terms_in_collection():
     total_count = 0
     for doc in number_of_terms1:
         total_count = total_count + number_of_terms1[doc]
     return total_count
+
 
 def build_query_freq(query):
     for w in query.split(" "):
@@ -38,17 +43,38 @@ def build_query_freq(query):
                 query_freq[w] = 1
     return query_freq
 
-def QLM(index_dict, query):
-    col_term_count = terms_in_collection()
+
+def QLM(index_dict, query , query_id):
+    QLM_dict = dict()
+    c = terms_in_collection()
     query_freq = build_query_freq(query)
 
     for q_term in query_freq:
-        if q_term in index_dict.keys():
-            for docID in index_dict[q_term]:
-                q_term_collection = q_term_collection + len(index_dict[q_term][docID])
-            print q_term_collection
-        else:
-            print "not in index_dict "+str(q_term)
+        if (q_term,) in index_dict:
+            cq = 0
+            for docID in index_dict[(q_term,)]:
+                cq = cq + len(index_dict[(q_term,)][docID])
+
+            for docID in index_dict[(q_term,)]:
+                d = number_of_terms1[docID]
+                fq = len(index_dict[(q_term,)][docID])
+
+                part_1 = float(1 - 0.35) * (float(fq)/float(d))
+                part_2 = float(0.35) * (float(cq)/float(c))
+
+                if docID in QLM_dict:
+                    QLM_dict[docID] = QLM_dict[docID] + math.log(part_1 + part_2)
+                else:
+                    QLM_dict[docID] = math.log(part_1 + part_2)
+
+    ranking = 1
+    if not os.path.exists('results'):
+        os.mkdir('results')
+
+    f = open('results/QLM-' + str(query_id) + ".txt", 'w')
+    f.write("ranking\tQueryID\tDOC\n")
+    for k in sorted(QLM_dict, key=QLM_dict.get , reverse=True)[:100]:
+        f.write(str(ranking)+"\t"+ str(query_id)+"\t"+k +"\n")
 
 def main():
     global number_of_terms1
@@ -72,14 +98,15 @@ def main():
     print "Reading queries from query doc ..."
     read_query_doc()
 
+    query_id = 1
     for query in parsed_queries:
         if choice == 1:
             BM25()
         elif choice == 2:
             tf_idf()
         else:
-            QLM(index_dict, query)
-
+            QLM(index_dict, query, query_id)
+        query_id = query_id + 1
 
 if __name__ == '__main__':
     main()

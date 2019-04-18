@@ -126,7 +126,7 @@ def write_to_corpus(parsedText, docID):
 
     filename = ''
     for chr in docID:
-        if chr.isalnum():
+        if chr.isalnum() or chr == '-':
             filename += chr
 
     # write to the file
@@ -163,5 +163,5 @@ def parse_corpus():
         content = content.strip()
 
         transformed_content = transformText(content, True, True)
-        write_to_corpus(transformed_content,docID)
+        write_to_corpus(transformed_content , docID)
 

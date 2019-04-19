@@ -1,0 +1,1 @@
+a multidimensional monte carlo quadrature with adaptive stratified sampling d1 algorithm a440  cacm january 1973  gallaher l j  monte carloquadrature stratified sampling adaptive quadrature sequential stratification  516 55  ca730111 jb january 24 1978  344 pm

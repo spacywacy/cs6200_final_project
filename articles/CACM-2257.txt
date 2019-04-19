@@ -1,0 +1,1 @@
+a note on optimal doubly-chained trees  cacm november 1972  kennedy s  file searching doubly-chained tree binary search tree  373 374 532 56  ca721112 jb january 27 1978  126 pm

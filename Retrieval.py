@@ -8,6 +8,22 @@ number_of_terms1 = dict()
 query_freq = dict()
 index_dict = dict()
 
+def write_results_to_file(model, res_dict , query_id):
+    if not os.path.exists('results'):
+        os.mkdir('results')
+
+    ranking = 1
+
+    if not os.path.exists('results/'+model):
+        os.mkdir('results/'+model)
+
+    f = open('results/'+model+'/'+model+'-' + str(query_id) + ".txt", 'w')
+    f.write("ranking\tQueryID\tDOC\tScore\n")
+    for k in sorted(res_dict, key=res_dict.get , reverse=True)[:100]:
+        f.write(str(ranking)+"\t"+ str(query_id)+"\t"+k +"\t"+ str(res_dict[k])+"\n")
+        ranking = ranking+1
+
+
 def read_query_doc():
     global parsed_queries
     fr = open('test-collection/cacm.query.txt', 'r')
@@ -19,9 +35,42 @@ def read_query_doc():
         parsed_queries.append(new_query)
         queries = queries[queries.find('</DOC>') + 6 : ]
 
-def tf_idf():
-    pass
+def tf_idf(index_dict, number_of_terms1, query, query_id):
+    tfidf_dict = dict()
+    tfidf_term_dict = dict()
 
+    query_freq = build_query_freq(query)
+
+    for q_term in query_freq:
+        if (q_term,) in index_dict:
+            fij = 0
+            fik = 0
+
+            N = float(len(number_of_terms1))
+            nk = float(len(index_dict[(q_term,)].keys()))
+            idf = math.log(N/nk)
+
+            for doc in index_dict[(q_term),]:
+                fik = float(len(index_dict[(q_term,)][doc]))
+                fij = float(number_of_terms1[doc])
+                tf = fik/fij
+                if (q_term,) in tfidf_term_dict:
+                    tfidf_term_dict[(q_term,)][doc] = tf * idf
+                else:
+                    tfidf_term_dict[(q_term,)] = {}
+                    tfidf_term_dict[(q_term,)][doc] = tf * idf
+
+    for q_term in query_freq:
+        if (q_term,) in index_dict:
+            for doc in index_dict[(q_term,)]:
+                doc_score = 0
+                doc_score = doc_score + tfidf_term_dict[(q_term,)][doc]
+                if doc in tfidf_dict:
+                    tfidf_dict[doc] = tfidf_dict[doc] + doc_score
+                else:
+                    tfidf_dict[doc] = doc_score
+
+    write_results_to_file('TFIDF', tfidf_dict, query_id)
 
 def BM25():
     pass
@@ -67,14 +116,7 @@ def QLM(index_dict, query , query_id):
                 else:
                     QLM_dict[docID] = math.log(part_1 + part_2)
 
-    ranking = 1
-    if not os.path.exists('results'):
-        os.mkdir('results')
-
-    f = open('results/QLM-' + str(query_id) + ".txt", 'w')
-    f.write("ranking\tQueryID\tDOC\n")
-    for k in sorted(QLM_dict, key=QLM_dict.get , reverse=True)[:100]:
-        f.write(str(ranking)+"\t"+ str(query_id)+"\t"+k +"\n")
+    write_results_to_file('QLM', QLM_dict , query_id)
 
 def main():
     global number_of_terms1
@@ -103,7 +145,7 @@ def main():
         if choice == 1:
             BM25()
         elif choice == 2:
-            tf_idf()
+            tf_idf(index_dict , number_of_terms1, query, query_id)
         else:
             QLM(index_dict, query, query_id)
         query_id = query_id + 1

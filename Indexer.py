@@ -17,41 +17,6 @@ def read_stop_words():
     fr = open('test-collection/common_words', 'r')
     stop_words = fr.read().splitlines()
 
-def write_number_of_term( n, number_of_terms_dict):
-    with open("number_of_terms" + str(n) + ".txt", 'w+') as fout:
-        for doc_id, num in number_of_terms_dict.items():
-            line = doc_id + ": " + str(num) + "\n"
-            fout.write(line)
-
-def write_inverted_indexer( n, index_dict):
-    with open("inverted_indexer" + str(n) + ".txt", "w+") as fout:
-        for term, doc_dict in index_dict.items():
-            line = "(" + ", ".join(term) + "): ["
-            for doc_id, freq_array in doc_dict.items():
-                line  = line + "(" + doc_id + ", " + str(len(freq_array)) + "), "
-            line = line.rstrip(", ") + "]" + "\n"
-            fout.write(line)
-
-def write_doc_freq( n, index_dict):
-    sorted_index_dict = sorted(index_dict.keys())
-
-    with open("document_freq" + str(n) + ".txt", "w+") as fout:
-        for term in sorted_index_dict:
-            doc_dict = index_dict[term]
-            line = "(" + ", ".join(term) + "): ["
-            line = line + ", ".join(doc_dict.keys()) + "], "
-            line = line + str(len(doc_dict.keys())) + "\n"
-            fout.write(line)
-
-def write_position_index( n, index_dict):
-    with open("position_index" + str(n) + ".txt", "w+") as fout:
-        for term, doc_dict in index_dict.items():
-            line = "(" + ", ".join(term) + "): ["
-            for doc_id, freq_array in doc_dict.items():
-                line = line + doc_id + ": (" + ", ".join(map(str, freq_array)) + "); "
-            line = line.rstrip("; ") + "]" + "\n"
-            fout.write(line)
-
 def build_n_grams(token, doc_id, n, n_grams_dict, n_index_dict):
     n_grams = ngrams(token, n)
     current_count = 0

@@ -1,6 +1,7 @@
 import os
 import nltk
 from nltk.util import ngrams
+from nltk import sent_tokenize
 from HTMLParser import HTMLParser
 from bs4 import BeautifulSoup
 import re
@@ -147,6 +148,8 @@ def transformText(parseText, punctuations, casefolding):
     return newcontent
 
 def parse_corpus():
+    doc_sentence_dict_origin = dict()
+    parsed_sentence_dict = dict()
     for f in os.listdir('test-collection/cacm/'):
         fr = open('test-collection/cacm/' + f, 'r')
         doc = fr.read()
@@ -162,6 +165,21 @@ def parse_corpus():
         content = content.replace('\n',' ')
         content = content.strip()
 
+        sentences = sent_tokenize(content)
+        doc_sentence_dict_origin[docID] = sentences
+        parsed_sentences = []
+        for sentence in sentences:
+          tmp_sentence = transformText(sentence, True, True)
+          parsed_sentences.append(tmp_sentence)
+        parsed_sentence_dict[docID] = parsed_sentences
+
         transformed_content = transformText(content, True, True)
         write_to_corpus(transformed_content , docID)
+    # self.doc_sentence_dict = doc_sentence_dict
+    with open("doc_sentence_dict_origin" + ".txt", 'w+') as fout:
+      fout.write(str(doc_sentence_dict_origin))
+
+    with open("doc_sentence_dict_parsed" + ".txt", 'w+') as fout:
+      fout.write(str(parsed_sentence_dict))
+
 

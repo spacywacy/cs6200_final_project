@@ -222,6 +222,7 @@ def terms_in_collection():
 
 
 def build_query_freq(query):
+    query_freq = dict()
     for w in query.split(" "):
         if w.strip():
             if w in query_freq:

@@ -1,0 +1,1 @@
+a numbering system for permutations of combinations  cacm june 1976  knott g d  combinatoricscoding systems storage mapping functions  49 530  ca760609 jb january 4 1978  133 pm

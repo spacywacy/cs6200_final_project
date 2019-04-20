@@ -1,0 +1,1 @@
+an efficient prime number generator algorithm 357 a1  cacm october 1969  singleton r c  prime numbers factoring number theory  315 530  ca691006 jb february 15 1978  323 pm

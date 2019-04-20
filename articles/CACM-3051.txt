@@ -1,0 +1,1 @@
+a comparison of heaps and the tl structure for the simulation event set  none  cacm october 1978  franta w maly k  simulationevent set heaps tl structure  334 422 55 81  ca781010 dh january 29 1979  1151 am

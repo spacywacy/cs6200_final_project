@@ -1,0 +1,1 @@
+comment on the conversion of decision tables to computer programs  cacm january 1971  pollack s l  decision tables diagnostic aids system analysis business applications  350 359 419 429 449  ca710113 jb february 8 1978  1009 am

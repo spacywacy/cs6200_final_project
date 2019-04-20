@@ -46,9 +46,11 @@ Compile and Run :
        the varible queriesFile to 'expanded-queries'
     5. The results will be generated at the same location in the results folder.
 
-  
 
-
-
-
- 
+4. For task 3,
+    1. Run the command 'python Task3A.py'
+    2. 'article-stopped' directory is automatically generated which contains all the files of the corpus with the stop words removed. A 'stopped-queries.txt' file is also generated which contains all the queries with the stop words removed from them.
+    3. The results are generated in the 'stop-results' directory.
+        1. For BM25, the results can be found in the the in the BM25 directory inside the 'stop-results' directory.
+        2. For TF/IDF, the results can be found in the the in the TFIDF directory inside the 'stop-results' directory.
+    

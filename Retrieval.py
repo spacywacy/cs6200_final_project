@@ -23,6 +23,11 @@ def write_results_to_file(model, res_dict , query_id):
         f.write(str(ranking)+"\t"+ str(query_id)+"\t"+k +"\t"+ str(res_dict[k])+"\n")
         ranking = ranking+1
 
+def write_queries_to_file(filename, queries):
+    f = open(filename +".txt", 'w')
+    for query in queries:
+        f.write(query+"\n")
+    f.close()
 
 def read_query_doc():
     global parsed_queries
@@ -34,6 +39,7 @@ def read_query_doc():
         new_query = Indexer.transformText(query, True, True)
         parsed_queries.append(new_query)
         queries = queries[queries.find('</DOC>') + 6 : ]
+    write_queries_to_file("parsed-queries",parsed_queries)
 
 def tf_idf(index_dict, number_of_terms1, query, query_id):
     tfidf_dict = dict()

@@ -48,6 +48,9 @@ public class HW4 {
     String baseLocation = "/Users/nikhilaraya/eclipse-workspace/LuceneIndex/";
 	String indexLocation = baseLocation +"index";
 	String corpusLocation = baseLocation + "articles";
+	String queriesFile = "parsed-queries";
+	String expandedQueriesFile = "expanded-queries";
+	
 	
 	HW4 indexer = null;
 	try {
@@ -89,7 +92,7 @@ public class HW4 {
 	if(!resultsDirectory.exists())
 		resultsDirectory.mkdir();
 	
-	Scanner sc = new Scanner(new FileReader("parsed-queries.txt"));
+	Scanner sc = new Scanner(new FileReader(queriesFile));
 	String query = null;
 	int queryId = 0;
 	BufferedWriter wr = null;
@@ -117,6 +120,39 @@ public class HW4 {
 		}
 		
 		wr.close();
+		
+		// code added to extract the docs content to a folder for calculating the dice coefficient in task 2a
+		
+//		for(int i = 0; i<hits.length; ++i) {
+//			int docId = hits[i].doc;
+//		    Document d = searcher.doc(docId);
+//		  
+//		    try {
+//		    	// reading from a input path
+//		    	File input = new File(d.get("path"));
+//		    	// extracting the docID from the input path
+//		    	String filename[] = d.get("path").split("/");
+//		    	// specifing the path to write the file /20/q5 denotes
+//	            // k=20 and q5 denotes the query number in the assignment question
+//		    	File outputDirectory = new File("/Users/nikhilaraya/Documents/IRProject/"+queryId);
+//		    	if(!outputDirectory.exists())
+//		    		outputDirectory.mkdir();
+//		    	File output = new File("/Users/nikhilaraya/Documents/IRProject/"+queryId+"/"+filename[6]);
+//		    	Scanner sc1 = new Scanner(input);
+//		    	PrintWriter printer = new PrintWriter(output);
+//		    	
+//		    	// writing to a file
+//		    	while(sc1.hasNextLine()) {
+//		    		String str = sc1.nextLine();
+//		    		printer.write(str);
+//		    	}
+//		    	printer.flush();
+//		    }catch(FileNotFoundException e) {
+//		    	System.err.println("File not found!");
+//		    }
+//		}
+		
+	    
 	    } catch (Exception e) {
 		System.out.println("Error searching " + query + " : "
 			+ e.getMessage());

@@ -114,6 +114,12 @@ def read_query_doc():
         queries = queries[queries.find('</DOC>') + 6 : ]
     write_queries_to_file("parsed-queries",parsed_queries)
 
+def read_query_doc_stem():
+    global parsed_queries_stem
+    parsed_queries_stem = (line.rstrip('\n') for line in open('test-collection/cacm_stem.query.txt', 'r'))
+
+
+
 def tf_idf(index_dict, number_of_terms1, query, query_id):
     tfidf_dict = dict()
     tfidf_term_dict = dict()
@@ -212,7 +218,7 @@ def BM25(index_dict, query, query_id):
 
   for docID in len_dict:
     result_dict[docID] = calculat_BM25_score(docID, index_dict, query, avg_len, total, len_dict)
-  write_results_to_file('BM25', result_dict, query_id, query, True)
+  write_results_to_file('BM25', result_dict, query_id, query)
 
 def terms_in_collection():
     total_count = 0
@@ -264,22 +270,40 @@ def main():
     print "Select 1 for BM25"
     print "Select 2 for tf-idf"
     print "select 3 for query likelihood"
+    print "select 4 for BM25 with stemmed corpus and quires"
 
     choice = input("Choose retrieval model")
 
-    print "Parsing the corpus ... "
-    Indexer.parse_corpus()
+    if choice == 4 or choice == 5:
+      Indexer.build_stem()
 
-    print "Building the index ... "
-    Indexer.build()
+    if choice != 4 and choice != 5:
+      print "Parsing the corpus ... "
+      Indexer.parse_corpus()
+
+      print "Building the index ... "
+      Indexer.build()
+
+
 
     number_of_terms1 = Indexer.number_of_terms1
     index_dict = Indexer.index_dict
 
     print "Reading queries from query doc ..."
     read_query_doc()
+    read_query_doc_stem()
 
     query_id = 1
+    if choice == 4:
+      for query in parsed_queries_stem:
+        BM25(index_dict, query, query_id)
+        query_id = query_id + 1
+
+    if choice == 5:
+      for query in parsed_queries_stem:
+        tf_idf(index_dict , number_of_terms1, query, query_id)
+        query_id += 1
+
     for query in parsed_queries:
         if choice == 1:
             BM25(index_dict, query, query_id)
@@ -288,6 +312,8 @@ def main():
         else:
             QLM(index_dict, query, query_id)
         query_id = query_id + 1
+
+
 
 if __name__ == '__main__':
     main()

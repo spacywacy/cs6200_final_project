@@ -1,6 +1,7 @@
 import nltk
 import os
 from nltk.stem.porter import *
+from nltk.stem.snowball import *
 
 
 def tokenize_doc(text, punctuation=True, case_fold=True):
@@ -30,22 +31,21 @@ def tokenize_doc(text, punctuation=True, case_fold=True):
 
 class Qbase_stem():
 
-	def __init__(self):
+	def __init__(self, max_expansion=5):
 		self.corpus_dir = 'articles'
-		self.stem = PorterStemmer().stem
+		#self.stem = PorterStemmer().stem
+		self.stem = EnglishStemmer().stem
 		self.stem_class = {} #{stem_term: [term_variations]}; term variations in a unique set
 		self.stem_class_lookup = {} #{orignial_term: [term_variations]}
 		self.loop_corpus()
 		self.clean_stem_class()
 		self.build_lookup()
-
-		for key, val in self.stem_class_lookup.items():
-			print(key, val)
+		self.max_exp = max_expansion
 
 	def loop_corpus(self):
 		for fname in os.listdir(self.corpus_dir):
 			full_path = os.path.join(self.corpus_dir, fname)
-			print(fname)
+			#print(fname)
 			with open(full_path, 'r') as f:
 				tokens = tokenize_doc(f.read())
 				self.build_stem_class(tokens)
@@ -70,7 +70,10 @@ class Qbase_stem():
 		q_tokens = tokenize_doc(query_str)
 		expansion = []
 		for token in q_tokens:
-			expansion += self.stem_class_lookup.get(token, [])
+			exp_token = self.stem_class_lookup.get(token, [])
+			if len(exp_token) > self.max_exp:
+				exp_token = exp_token[:self.max_exp]
+			expansion += exp_token
 
 		expanded = list(set(q_tokens + expansion))
 		return ' '.join(expanded)

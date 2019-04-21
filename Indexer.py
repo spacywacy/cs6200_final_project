@@ -120,6 +120,38 @@ def build():
     write_position_index(1, index_dict)
 
 
+def build_stem():
+    path = os.getcwd() + '/cacm/'
+    global index_dict
+    onegrams_dict = {}
+    global number_of_terms1
+    count = 0
+
+    for filename in os.listdir(path):
+        # if count > 10:
+        #   break
+
+        # ignore non txt file
+        if ".txt" not in filename:
+            continue
+
+        fullpath = path + filename
+
+        with open(fullpath, 'r') as content_file:
+            content = content_file.read()
+            token = nltk.word_tokenize(content)
+            doc_id = filename.rstrip(".txt")
+
+            total_1 = build_n_grams(token, doc_id, 1, onegrams_dict, index_dict)
+
+        number_of_terms1[doc_id] = total_1
+
+        count += 1
+
+    onegrams_sorted_key = sorted(onegrams_dict, key=onegrams_dict.get, reverse=True)
+    onegrams_dict = onegrams_dict
+
+
 def write_to_corpus(parsedText, docID):
     # create corpus folder
     if not os.path.exists('articles'):

@@ -39,12 +39,11 @@ Compile and Run :
         5. Run the file, the outputs will be generated at the same location in the results folder.
     
 3. For task 2,
-    1. The folder n10 has the top 10 documents for every query, generated using Lucene.
+    1. The folder n10 has the top 10 documents for every query, generated using BM25.
     2. Run the command 'python pseudo-relevance.py'
     3. This program will generate a file named 'expanded-queries.txt'
-    4. Follow the steps described above for lucene by replacing the 'parsed-queries.txt' with the 'expanded-queries.txt' and also in the HW4.java file change 
-       the varible queriesFile to 'expanded-queries'
-    5. The results will be generated at the same location in the results folder.
+    4. The results will be generated in the 'pseudo-rel' directory.
+        1. For BM25, the results can be found in the the in the BM25 directory inside the 'pseudo-rel' directory.
 
 
 4. For task 3,

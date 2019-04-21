@@ -44,6 +44,7 @@ Compile and Run :
     3. This program will generate a file named 'expanded-queries.txt'
     4. The results will be generated in the 'pseudo-rel' directory.
         1. For BM25, the results can be found in the the in the BM25 directory inside the 'pseudo-rel' directory.
+    5.  For query-based stemming, call the function Qbase_stem.stem_expand(query_str) in the query_base_stem.py module to generate a expanded query string
 
 
 4. For task 3,

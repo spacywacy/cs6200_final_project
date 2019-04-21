@@ -23,7 +23,7 @@ Compile and Run :
 
 1. Unzip the Project folder submitted and on the command line navigate to the Project directory.
 2. For task 1, 
-    1. Run the command 'python Retriever.py'.
+    1. Run the command 'python Retrieval.py'.
     2. The user will be prompted to enter the choice of retrieval model. After the user enters his/her choice, the results will be generated in the results folder.
         1. For Query Likelihood Model, the results for all the 64 queries can be found in the results/QLM folder.  
         2. For TF-IDF, the results for all the 64 queries can be found in the results/TFIDF folder.
@@ -53,4 +53,8 @@ Compile and Run :
     3. The results are generated in the 'stop-results' directory.
         1. For BM25, the results can be found in the the in the BM25 directory inside the 'stop-results' directory.
         2. For TF/IDF, the results can be found in the the in the TFIDF directory inside the 'stop-results' directory.
-    
+    4. For task 3b, run the command 'python processer.py' to load the stemmed corpus and parse it.
+    5. Run 'python Retrieval.py', enter 4 in the terminal and hit enter, the result for BM25 with stemmed corpus and stemmed queries will be generated under results/BM25. Enter 5 in the terminal and hit eneter, the result for tf/idf with stemmed corpus and stemmed queries will be generated under results/TFIDF 
+
+5. For snippet generation and query term highlight, please run 'python Retrieval.py', and enter 1 to choose BM25, the snippet will be generated with the results. Query terms will be wrapped with "*" to indicate "Highlight".
+6. For evaluation, run 'python experiments.py' and all results will be analyzed, the reports will be stored under /evaluation folder.

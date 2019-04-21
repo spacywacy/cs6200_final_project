@@ -218,7 +218,7 @@ def BM25(index_dict, query, query_id):
 
   for docID in len_dict:
     result_dict[docID] = calculat_BM25_score(docID, index_dict, query, avg_len, total, len_dict)
-  write_results_to_file('BM25', result_dict, query_id, query)
+  write_results_to_file('BM25', result_dict, query_id, query, True)
 
 def terms_in_collection():
     total_count = 0
